@@ -1,4 +1,6 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
+
+with lib;
 
 {
   config = {
@@ -24,12 +26,16 @@
       pkgs.ripgrep
       pkgs.keybase
       pkgs.niv
+      pkgs.cuetools
+      pkgs.shntool
+      pkgs.flac
+      pkgs.fzf
+      pkgs.fd
     ];
 
     programs.emacs =  {
-      enable = true;
+      enable = false;
     };
-
 
     programs.bat = {
       enable = true;
@@ -61,5 +67,8 @@
       };
     };
 
+    programs.go = {
+      enable = true;
+    };
   };
 }
