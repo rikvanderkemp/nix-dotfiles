@@ -35,11 +35,11 @@ with lib;
     };
 
     home.file = {
-      ".doom.d/config.el".source = ./doom.d/config.el;
-      ".doom.d/custom.el".source = ./doom.d/custom.el;
-      ".doom.d/init.el".source = ./doom.d/init.el;
-      ".doom.d/packages.el".source = ./doom.d/packages.el;
+      ".doom.d" = {
+        source = ./doom.d;
+        recursive = true;
       };
+    };
 
     programs.bat = {
       enable = true;
