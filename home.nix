@@ -33,28 +33,52 @@ with lib;
       pkgs.fd
     ];
 
-    programs.emacs =  {
-      enable = false;
+    programs.emacs = { enable = false; };
+
+    home.file = {
+      ".doom.d" = {
+        source = ./doom.d;
+        recursive = true;
+      };
     };
 
     programs.bat = {
       enable = true;
-      config = {
-        theme = "Dracula";
-      };
+      config = { theme = "Dracula"; };
     };
 
     programs.git = {
       enable = true;
       userName = "rikvanderkemp";
       userEmail = "rik@upto11.nl";
+      aliases = {
+        st = "status -s -b";
+        lg =
+          "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset %Cblue[%an]%Creset' --abbrev-commit --date=relative";
+        alias = "config --get-regexp ^alias\\.";
+        co = "checkout";
+        up = "!f() { echo 'Fetch & Pull' && git fetch --tags && git pull; }; f";
+        t =
+          "log --tags --simplify-by-decoration --pretty=format:'%Cred%d%Creset - %ai (%Cblue[%an]%Creset)' -n30";
+        edit = "config --edit --global";
+        delmerged = ''
+          !f() { git branch --merged | grep -v "^*" | awk '{print $NF}' | xargs git branch -d; }; f'';
+        pushf = "push --force-with-lease";
+        delgone =
+          "!f() { git branch -vvv | grep gone | awk '{print $1}' | xargs git branch -d; }; f";
+        delgonef =
+          "!f() { git branch -vvv | grep gone | awk '{print $1}' | xargs git branch -D; }; f";
+        mergeff = "merge --ff";
+        recent =
+          "for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(refname:short)'";
+        prunetags = "!f() { git tag -l | xargs git tag -d; git fetch -t; }; f";
+        undo = "reset HEAD^";
+        wip = "!f() { git add . && git commit -m'WIP' --no-verify; }; f";
+        cp = "log --pretty=format:'🍒 %h --> %d %s' -1";
+      };
       extraConfig = {
-        pull = {
-          ff = "only";
-        };
-        init = {
-          defaultBranch = "main";
-        };
+        pull = { ff = "only"; };
+        init = { defaultBranch = "main"; };
       };
       ignores = [ ".DS_Store" ".idea" ];
       delta = {
@@ -67,8 +91,29 @@ with lib;
       };
     };
 
-    programs.go = {
+    programs.go = { enable = true; };
+
+    programs.beets = {
       enable = true;
+      settings = {
+        directory = "/home/rik/Music";
+        library = "/home/rik/Music/musiclibrary.blb";
+        import = {
+          copy = "no";
+          move = "no";
+        };
+        paths = {
+          default =
+            "$albumartist/$year - $album%aunique{}/%if{$multidisc,Disc $disc/}$track - $title";
+        };
+        item_fields = { multidisc = "1 if disctotal > 1 else 0"; };
+
+        plugins = "inline fetchart bandcamp";
+        bandcamp = {
+          exclude_extra_fields = [ "lyrics" "comments" "year" "country" ];
+        };
+        art = "true";
+      };
     };
   };
 }
