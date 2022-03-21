@@ -16,7 +16,7 @@ For fish, I would recommend adding the above to bashrc first and then copy paste
 The following should be sufficient:
 
 ``` shell
-set -U NIX_PATH /home/<user>/.nix-defexpr/channels /nix/var/nix/profiles/per-user/root/channels
+set -x NIX_PATH /home/<user>/.nix-defexpr/channels /nix/var/nix/profiles/per-user/root/channels
 ```
 
 Now install home-manager:
