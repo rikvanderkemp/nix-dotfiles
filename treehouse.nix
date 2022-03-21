@@ -22,17 +22,10 @@ with lib;
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
 
-    home.packages = [
-      pkgs.ripgrep
-      pkgs.keybase
-      pkgs.niv
-      pkgs.fzf
-      pkgs.fd
-    ];
+    home.packages =
+      [ pkgs.nixfmt pkgs.ripgrep pkgs.keybase pkgs.niv pkgs.fzf pkgs.fd ];
 
-    programs.emacs =  {
-      enable = true;
-    };
+    programs.emacs = { enable = true; };
 
     home.file = {
       ".doom.d" = {
@@ -43,9 +36,7 @@ with lib;
 
     programs.bat = {
       enable = true;
-      config = {
-        theme = "Dracula";
-      };
+      config = { theme = "Dracula"; };
     };
 
     programs.git = {
@@ -58,18 +49,24 @@ with lib;
       };
       aliases = {
         st = "status -s -b";
-        lg = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset %Cblue[%an]%Creset' --abbrev-commit --date=relative";
+        lg =
+          "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset %Cblue[%an]%Creset' --abbrev-commit --date=relative";
         alias = "config --get-regexp ^alias\\.";
         co = "checkout";
         up = "!f() { echo 'Fetch & Pull' && git fetch --tags && git pull; }; f";
-        t = "log --tags --simplify-by-decoration --pretty=format:'%Cred%d%Creset - %ai (%Cblue[%an]%Creset)' -n30";
+        t =
+          "log --tags --simplify-by-decoration --pretty=format:'%Cred%d%Creset - %ai (%Cblue[%an]%Creset)' -n30";
         edit = "config --edit --global";
-        delmerged = "!f() { git branch --merged | grep -v \"^*\" | awk '{print $NF}' | xargs git branch -d; }; f";
+        delmerged = ''
+          !f() { git branch --merged | grep -v "^*" | awk '{print $NF}' | xargs git branch -d; }; f'';
         pushf = "push --force-with-lease";
-        delgone = "!f() { git branch -vvv | grep gone | awk '{print $1}' | xargs git branch -d; }; f";
-        delgonef = "!f() { git branch -vvv | grep gone | awk '{print $1}' | xargs git branch -D; }; f";
+        delgone =
+          "!f() { git branch -vvv | grep gone | awk '{print $1}' | xargs git branch -d; }; f";
+        delgonef =
+          "!f() { git branch -vvv | grep gone | awk '{print $1}' | xargs git branch -D; }; f";
         mergeff = "merge --ff";
-        recent = "for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(refname:short)'";
+        recent =
+          "for-each-ref --count=10 --sort=-committerdate refs/heads/ --format='%(refname:short)'";
         prunetags = "!f() { git tag -l | xargs git tag -d; git fetch -t; }; f";
         undo = "reset HEAD^";
         wip = "!f() { git add . && git commit -m'WIP' --no-verify; }; f";
@@ -84,9 +81,7 @@ with lib;
           autocrlf = "input";
           filemode = false;
         };
-        init = {
-          defaultBranch = "main";
-        };
+        init = { defaultBranch = "main"; };
       };
       ignores = [ ".DS_Store" ".idea" ];
       delta = {
@@ -97,6 +92,29 @@ with lib;
           syntax-theme = "Dracula";
           features = "decorations";
         };
+      };
+    };
+
+    programs.beets = {
+      enable = true;
+      settings = {
+        directory = "/home/rik/Music";
+        library = "/home/rik/Music/musiclibrary.blb";
+        import = {
+          copy = "no";
+          move = "no";
+        };
+        paths = {
+          default =
+            "$albumartist/$year - $album%aunique{}/%if{$multidisc,Disc $disc/}$track - $title";
+        };
+        item_fields = { multidisc = "1 if disctotal > 1 else 0"; };
+
+        plugins = "inline fetchart bandcamp";
+        bandcamp = {
+          exclude_extra_fields = [ "lyrics" "comments" "year" "country" ];
+        };
+        art = "true";
       };
     };
   };

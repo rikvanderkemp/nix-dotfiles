@@ -1,0 +1,20 @@
+directory:  /home/rik/Music
+library: /home/rik/Music/musiclibrary.blb
+import:
+        copy: no
+        move: no
+paths:
+        default: $albumartist/$year - $album%aunique{}/%if{$multidisc,Disc $disc/}$track - $title
+
+item_fields:
+    multidisc: 1 if disctotal > 1 else 0
+
+plugins: inline fetchart bandcamp
+
+bandcamp:
+    exclude_extra_fields:
+      - lyrics
+      - comments
+      - year
+      - country
+    art: true
