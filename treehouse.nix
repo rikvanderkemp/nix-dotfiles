@@ -31,8 +31,15 @@ with lib;
     ];
 
     programs.emacs =  {
-      enable = false;
+      enable = true;
     };
+
+    home.file = {
+      ".doom.d/config.el".source = ./doom.d/config.el;
+      ".doom.d/custom.el".source = ./doom.d/custom.el;
+      ".doom.d/init.el".source = ./doom.d/init.el;
+      ".doom.d/packages.el".source = ./doom.d/packages.el;
+      };
 
     programs.bat = {
       enable = true;
