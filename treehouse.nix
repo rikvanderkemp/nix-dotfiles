@@ -101,8 +101,8 @@ with lib;
         directory = "/home/rik/Music";
         library = "/home/rik/Music/musiclibrary.blb";
         import = {
-          copy = "no";
-          move = "no";
+          copy = false;
+          move = false;
         };
         paths = {
           default =
