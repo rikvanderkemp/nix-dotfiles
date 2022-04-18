@@ -3,6 +3,7 @@
 with lib;
 
 {
+
   config = {
     # Home Manager needs a bit of information about you and the
     # paths it should manage.
@@ -22,6 +23,7 @@ with lib;
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
 
+    nixpkgs.config.allowUnfree = true;
     home.packages = [
       pkgs.ripgrep
       pkgs.keybase
@@ -99,8 +101,8 @@ with lib;
         directory = "/home/rik/Music";
         library = "/home/rik/Music/musiclibrary.blb";
         import = {
-          copy = "no";
-          move = "no";
+          copy = false;
+          move = false;
         };
         paths = {
           default =
