@@ -44,8 +44,8 @@ with lib;
       userName = "rikvanderkemp";
       userEmail = "r.vanderkemp@pararius.nl";
       signing = {
-        key = "725EEF5FB6559093";
-        signByDefault = true;
+        key = "";
+        signByDefault = false;
       };
       aliases = {
         st = "status -s -b";
